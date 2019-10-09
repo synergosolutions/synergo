@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+
+{% block main %}
+    <h1>Settings</h1>
+        <br>
+    <img src="{{ pic }}" alt="Avatar" class="pfp">
+    <br><br><br>
+    <h4>Username: {{ name }}</h4>
+    <br>
+    <h4 title="{{ word }}">Password: {{ word }}</h4>
+    <br>
+    <h4>Change Picture</h4>
+    <br>
+    <p><b>Instructions (Google Chrome):</b><br>First find a picture online.<br>Then right click and select "Copy image address".<br>Paste below and enter.<br>You have your picture!<br><i>Note: To reset your picture enter "Default".</i></p>
+    <br>
+    <form action="/pfp" method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="new" placeholder="New Picture URL" type="text">
+        </div>
+        <button class="btn btn-primary" type="submit">Save</button>
+    </form>
+
+    <br>
+    <h4>Change Username</h4>
+        <br>
+    <form action="/name" method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="username" placeholder="New Username" type="text">
+        </div>
+        <button class="btn btn-primary" type="submit">Save</button>
+    </form>
+    <br>
+    <h4>Change Password</h4>
+    <br>
+    <form action="/password" method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="old" placeholder="Old Password" type="password">
+        </div>
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="new" placeholder="New Password" type="password">
+        </div>
+        <button class="btn btn-primary">Save</button>
+    <br><br>
+    <h3 class="red"><b>DELETE ACCOUNT</b></h3>
+    <br>
+    <p class="red">Be careful. You can't get your account back.</p>
+    <br>
+    <a href="/delacc" class="btn btn-danger btn-lg active" role="button" aria-pressed="true"><b>DELETE ACCOUNT</b></a>
+
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+
+{% block style %}
+.canvas {
+width: 200px;
+height: 200px;
+}
+{% endblock %}
+
+
+
+
+{% block main %}
+<h1>Paint</h1>
+<br><br>
+<form>
+    <input type="color" value="#000" name="color">
+    <select class="form-control">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+        <option value="25">25</option>
+        <option value="30">30</option>
+        <option value="35">35</option>
+        <option value="40">40</option>
+    </select>
+    <button class="btn btn-default" onclick="window.location.reload()">Clear</button>
+    </form>
+
+    <canvas></canvas>
+    <script src="static/paint.js"></script>
+
+{% endblock %}
+
+
+
+
+
+
+
+

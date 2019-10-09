@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+
+{% block main %}
+
+<form action="/mail" method="post" class="border">
+        <fieldset>
+            <div class="form-group">
+                <br>
+                <select name="to" class="form-control" style="width:900px">
+                    <option value="" disabled selected="">To...</option>
+                    {% for user in users %}
+                        <option value="{{ user.id }}">{{ user.username }} ({{user.name}})</option>
+                    {% endfor %}
+                </select>
+          </div>
+          <div class="form-group">
+            <input autocomplete="off" class="form-control" style="width:900px" autofocus name="title" placeholder="Title" type="text" />
+          </div>
+          <div>
+              <textarea autocomplete="off" autofocus class="big" name="mail" ></textarea>
+          </div>
+          <br>
+          <button class="btn btn-default" type="submit">Send</button>
+        </fieldset>
+</form>
+<br><br>
+<h4><button class="btn btn-default" onclick="window.location.reload()">Refresh for New Mail</button></h4>
+<br><br><br>
+<table class = "table table-striped border">
+    <thead>
+        <tr>
+            <th colspan="7">Mail</th>
+        </tr>
+        {% if yes %}
+            <tr>
+                <th colspan="5"><a href="/view">View or Edit a Mail</a></th>
+            </tr>
+        {% else %}
+            <tr>
+                <th colspan="5"><a href="/view" disabled>View or Edit a Mail</a></th>
+            </tr>
+        {% endif %}
+    </thead>
+
+    <tbody>
+        {% for mail in mail %}
+        <tr>
+            <td colspan="5"><b>From:</b> {{ mail.by }}<br>
+            <b>To:</b> {{ mail.too }}<br>
+            <b>Title:</b> {{ mail.title  }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+
+
+{% endblock %}

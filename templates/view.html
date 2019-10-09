@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+
+{% block main %}
+
+    <form action="/edit" method="post">
+
+        <fieldset>
+            <div class="form-group">
+                <select name="title1" class="form-group">
+                    <option value="" disabled selected=""></option>
+                    {% for mail in mails %}
+                        <option value="{{ mail.title }}">{{ mail.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-default" type="submit">View Mail</button>
+            </div>
+        </fieldset>
+
+    </form>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block style %}
+* {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: black;
+        }
+        canvas {
+            display: block;
+            margin: 30px auto;
+            background: rgb(179, 179, 179);
+        }
+{% endblock %}
+
+{% block main %}
+<br><br><br>
+    <canvas width="400" height="400"></canvas>
+    <script src="static/snake.js"></script>
+{% endblock %}

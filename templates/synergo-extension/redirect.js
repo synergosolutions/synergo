@@ -1,0 +1,1 @@
+window.location.href = "https://dd25c4d8-a569-4322-bf86-6ff6c868c207-ide.cs50.xyz:8080/";

@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+<br><br>
+<table class = "table table-striped">
+    <thead>
+        <tr>
+            <th colapn="5">Lister</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="border">
+            <td colspan="5"><a href="/add">Add</a><br><a href="/editlist">Edit</a><br><a href="/delete">Delete</a></td>
+        </tr>
+        {% for item in items %}
+        <tr class="border">
+            <td colspan="5" >{{ item.item }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}

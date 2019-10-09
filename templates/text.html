@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+
+{% block main %}
+
+<form action="/text" method="post" class="border">
+        <fieldset>
+          <div class="form-group">
+            <input autocomplete="off" style="width:900px" autofocus name="title" placeholder="Title" type="text" />
+          </div>
+          <div>
+              <textarea autocomplete="off" autofocus class="big" name="text_message" rows="20" cols="50" ></textarea>
+          </div>
+          <br>
+          <button class="btn btn-default" type="submit">Save</button>
+        </fieldset>
+</form>
+<br><br><br>
+<table class = "table table-striped border">
+    <thead>
+        <tr>
+            <th colspan="7">TextPad</th>
+        </tr>
+        <tr>
+            <th colspan="7"><a href="/textview">Edit a TextPad</a></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for text in texts %}
+        <tr>
+            <td colspan="7"><b>Title:</b> {{ text.title  }} <br> <b>Created:</b> {{ text.date }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+
+
+{% endblock %}

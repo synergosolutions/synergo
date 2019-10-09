@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<img src="{{ pic }}" class="pfp" />
+
+<br><br><br>
+<h2>Welcome back, {{ name }}!</h2>
+
+You have <b>{{ text }}</b> TextPad(s).
+<br><br>
+You have <b>{{ lists }}</b> items in your Lister.
+<br><br>
+You have <b>{{ mail }}</b> MailMonkey(s) in your inbox.
+<br><br>
+You have <b>{{ new }}</b> new MailMonkey(s).
+<br><br>
+{% if mod %}
+    You have <b>{{ user - 1 }}</b> Users:
+    <br><br>
+    {% for user in users %}
+        <b>·  {{ user.username }}</b><br>
+    {% endfor %}
+{% endif %}
+{% endblock %}

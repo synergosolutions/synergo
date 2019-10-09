@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+
+{% block main %}
+
+    <form action="/editlist" method="post">
+
+        <fieldset>
+            <div class="form-group">
+                <select name="item" class="form-group">
+                    <option value="" disabled selected="">Change</option>
+                    {% for item in items %}
+                        <option value="{{ item.item }}">{{ item.item }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            to be
+            <div class="form-group">
+                <input autocomplete="off" autofocus class="form-control" name="new" placeholder="Edited item" type="text"/>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-default" type="submit">Edit</button>
+            </div>
+        </fieldset>
+
+    </form>
+{% endblock %}

@@ -1,0 +1,79 @@
+.buttonXO {
+    background-color: white;
+    width: 60px;
+    height: 60px;
+    margin: 3px;
+    border-radius: 20px;
+    font-size: 50px;
+    font-family: Arial;
+    color: grey;
+}
+.tableBody {
+    width: 210px;
+    height: 210px;
+    background-color: grey; 
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.Center {
+    display: flex;
+    justify-content: center;
+}
+.resetButton {
+    width: 80px;
+    background: white;
+    border: 1px solid black;
+    padding: 5px;
+    margin-bottom: 40px;
+}
+body {
+    background-color: white;
+    color: white;
+    font-size: 20px;
+    font-family: 'Roboto Mono';
+}
+.dFlex {
+    display: flex;
+    justify-content: center;
+}
+.Center2 {
+    flex-direction: column;
+    text-align: center;
+}
+.ticTitle {
+    margin-top: 50px;
+    padding: 20px;
+    font-size: 40px;
+}
+.whiteBox {
+    background-color: grey;
+    box-shadow: 10px 10px 50px black;
+    margin-top: 10%;
+    margin-left: 25%;
+    margin-right: 25%;
+    border-radius: 10px;
+}
+.choiceButtons {
+    width: 100px;
+    background: white;
+    border: 1px solid black;
+    padding: 10px;
+    margin-bottom: 25px;
+}
+.choiceXO {
+    padding-top: 50px;
+    text-align: center;
+}
+.displayNone {
+    display: none;
+}
+.displayNone2 {
+    display: none;
+}
+#results {
+    padding-bottom: 40px;
+}
+#results2 {
+    padding-bottom: 40px;
+}

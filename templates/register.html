@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+
+{% block main %}
+<h1>Register</h1>
+<br>
+<span class="red">{{ error }}</span>
+<br>
+    <form action="/register" method="post">
+        <fieldset>
+            <div class="form-group">
+                <input autofocus class="form-control" name="name" placeholder="Name" type="text"/>
+            </div>
+            <div class="form-group">
+                <input autofocus class="form-control" pattern=".+@gmail.com" name="email" placeholder="E-mail" type="text"/>
+            </div>
+            <div class="form-group">
+                <input autofocus class="form-control" name="username" placeholder="Username" type="text"/>
+            </div>
+            <div class="form-group">
+                <input class="form-control" name="password" placeholder="Password" type="password"/>
+            </div>
+            <div class="form-group">
+                <input class="form-control" name="confirmation" placeholder="Password (again)" type="password"/>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-default" type="submit">Register</button>
+            </div>
+        </fieldset>
+    </form>
+<br>
+    Already have an account? <a href="/login">Login</a>
+{% endblock %}

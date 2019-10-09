@@ -1,0 +1,117 @@
+{% extends "layout.html" %}
+
+
+{% block style %}
+.buttonXO {
+    background-color: white;
+    width: 60px;
+    height: 60px;
+    margin: 3px;
+    border-radius: 20px;
+    font-size: 50px;
+    font-family: Arial;
+    color: grey;
+    padding-bottom: 10px;
+}
+.tableBody {
+    width: 210px;
+    height: 210px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.Center {
+    display: flex;
+    justify-content: center;
+}
+body {
+    background-color: white;
+    font-size: 20px;
+}
+.dFlex {
+    display: flex;
+    justify-content: center;
+}
+.Center2 {
+    flex-direction: column;
+    text-align: center;
+}
+.ticTitle {
+    margin-top: 50px;
+    padding: 20px;
+    font-size: 40px;
+}
+.whiteBox {
+    margin-top: 10%;
+    margin-left: 25%;
+    margin-right: 25%;
+    border-radius: 10px;
+}
+.choiceButtons {
+    width: 100px;
+    background: white;
+    border: 1px solid black;
+    padding: 10px;
+    margin-bottom: 25px;
+}
+.choiceXO {
+    padding-top: 50px;
+    text-align: center;
+}
+.displayNone {
+    display: none;
+}
+.displayNone2 {
+    display: none;
+}
+#results {
+    padding-bottom: 40px;
+}
+#results2 {
+    padding-bottom: 40px;
+}
+{% endblock %}
+
+
+
+
+{% block main %}
+    <h1><b>Tic-Tac-Toe</b></h1>
+<div class="whiteBox">
+    <div class="dFlex">
+        <div id="buttonDisplay" class="choiceXO">
+            <input class="btn btn-secondary" type="button" value='Start Game' onclick="xGame()">
+        </div>
+    </div>
+    <div class="displayNone" id="displayNone">
+        <div class="dFlex">
+
+        </div>
+        <div class="Center">
+            <div id="onePlayer" class="tableBody">
+                <button href="" id="A1" onclick="Render('A1')" class="buttonXO"></button>
+                <button href="" id="A2" onclick="Render('A2')" class="buttonXO"></button>
+                <button href="" id="A3" onclick="Render('A3')" class="buttonXO"></button>
+                <button href="" id="B1" onclick="Render('B1')" class="buttonXO"></button>
+                <button href="" id="B2" onclick="Render('B2')" class="buttonXO"></button>
+                <button href="" id="B3" onclick="Render('B3')" class="buttonXO"></button>
+                <button href="" id="C1" onclick="Render('C1')" class="buttonXO"></button>
+                <button href="" id="C2" onclick="Render('C2')" class="buttonXO"></button>
+                <button href="" id="C3" onclick="Render('C3')" class="buttonXO"></button>
+            </div>
+        </div>
+        <div class="dFlex">
+            <div class="Center2">
+                <div id="results"></div>
+            </div>
+        </div>
+        <br><br><br>
+    <button class="btn btn-default" onclick="window.location.reload()">Restart</button>
+    </div>
+    <script type="text/javascript" src="static/main.js"></script>
+
+{% endblock %}
+
+
+
+

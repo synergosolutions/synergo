@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block style %}
+.mail {
+    border: 2px solid black;
+    text-align: left;
+
+}
+
+{% endblock %}
+
+{% block main %}
+
+   {% if own %}
+   <form action="/edit" method="post">
+    <div>
+        <b><textarea name="new" rows="1" cols="20" disabled>{{ title }}</textarea></b>
+    </div>
+    <div>
+                  <textarea name="new" rows="10" cols="50" >{{ mail }}</textarea>
+    </div>
+    <div class="form-group">
+                    <button class="btn btn-default" type="submit">Save</button>
+                </div>
+    </form>
+    {% else %}
+    <b>{{ title }}</b>
+        <p class="mail">{{ mail }}</p>
+
+    {% endif %}
+{% endblock %}

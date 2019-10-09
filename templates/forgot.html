@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+
+{% block main %}
+    <form action="/forgot" method="post">
+        <fieldset>
+        <div class="form-group">
+            <select class="form-control" name="name">
+                <option value="" disabled selected="">Username</option>
+            {% for user in users %}
+                <option value="{{ user.id }}">{{ user.username }}</option>
+            {% endfor %}
+        </select>
+        </div>
+        <div class="form-group">
+            <input name="new"class="form-control" placeholder="New password" type="password"/>
+        </div>
+        <div class="form-group">
+                <button class="btn btn-default" type="submit">Save</button>
+            </div>
+        </fieldset>
+    </form>
+{% endblock %}
