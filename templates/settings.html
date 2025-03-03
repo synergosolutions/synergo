@@ -7,13 +7,8 @@
     <img src="{{ pic }}" alt="Avatar" class="pfp">
     <br><br><br>
     <h4>Username: {{ name }}</h4>
-    <br>
-    <h4 title="{{ word }}">Password: {{ word }}</h4>
-    <br>
+    <br><br>
     <h4>Change Picture</h4>
-    <br>
-    <p><b>Instructions (Google Chrome):</b><br>First find a picture online.<br>Then right click and select "Copy image address".<br>Paste below and enter.<br>You have your picture!<br><i>Note: To reset your picture enter "Default".</i></p>
-    <br>
     <form action="/pfp" method="post">
         <div class="form-group">
             <input autocomplete="off" autofocus class="form-control" name="new" placeholder="New Picture URL" type="text">

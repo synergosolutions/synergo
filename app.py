@@ -11,7 +11,10 @@ from tempfile import mkdtemp
 # Import Werkzeug utilities for exception handling and password security
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
-import cs50
+
+# Import CS50's SQL module for database interaction
+from cs50 import SQL
+
 # Import custom helper functions, including a login requirement decorator
 from helpers import login_required
 
@@ -38,36 +41,29 @@ app.config["SESSION_PERMANENT"] = False  # Sessions are not permanent; they expi
 app.config["SESSION_TYPE"] = "filesystem"  # Use filesystem-based session storage
 Session(app)  # Initialize the session extension with the app
 
-# Define the database connection string for SQLite
-# Note: This assumes 'db' is a database object with an 'execute' method, typically from a library like CS50's SQL
-# In a real implementation, you would need to initialize this properly (e.g., with SQLAlchemy or CS50's SQL)
-db = "sqlite:///database.db"  # Placeholder for database configuration
+# Initialize the SQLite database connection using cs50.SQL
+# This assumes a file named 'database.db' exists in the same directory as app.py
+db = SQL("sqlite:///database.db")
 
 # --- Route Definitions ---
 
 @app.route("/intro")
 def intro():
     """Render the introductory page of the application"""
-    # Simply render the intro.html template as a landing page
     return render_template("/intro.html")
 
 @app.route("/")
 @login_required
 def search():
     """Render the main authenticated homepage"""
-    # This route requires the user to be logged in due to the @login_required decorator
-    # Render index.html, which serves as the main dashboard after login
     return render_template("index.html")
 
 @app.route("/list")
 @login_required
 def list():
     """Display the user's list items"""
-    # Get the current user's ID from the session
     user_id = session["user_id"]
-    # Query the database for all list items associated with this user
     items = db.execute("SELECT * FROM list WHERE id = :id", id=user_id)
-    # Render the list.html template, passing the retrieved items for display
     return render_template("list.html", items=items)
 
 @app.route("/add", methods=["GET", "POST"])
@@ -75,59 +71,40 @@ def list():
 def add():
     """Handle adding a new item to the user's list"""
     if request.method == "POST":
-        # Handle form submission to add a new list item
-        item = request.form.get("item")  # Retrieve the item from the form data
-        # Insert the item into the 'list' table with the current user's ID
+        item = request.form.get("item")
         db.execute("INSERT INTO list (id, item) VALUES(:id, :item)", id=session["user_id"], item=item)
-        # Redirect to the list page to show the updated list
         return redirect("/list")
     else:
-        # Handle GET request by rendering the form to add a new item
         return render_template("/add.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """Handle user login functionality"""
-    # Clear any existing session data to start fresh
     session.clear()
 
     if request.method == "POST":
-        # Handle form submission for logging in
         username = request.form.get("username")
         password = request.form.get("password")
 
-        # Validate that username was provided
         if not username:
             return render_template("/login.html", error="You haven't entered username")
-
-        # Validate that password was provided
         if not password:
             return render_template("/login.html", error="You haven't entered password")
 
-        # Query the database for a user with the given username and password
-        # Note: This implementation stores passwords in plain text, which is insecure
-        rows = db.execute("SELECT * FROM users WHERE username = :username AND hash = :hash", 
-                         username=username, hash=password)
-        
-        # Check if a matching user was found
-        if not rows:
+        # Use hashed passwords for security (assuming 'hash' column stores hashed passwords)
+        rows = db.execute("SELECT * FROM users WHERE username = :username", username=username)
+        if not rows or not check_password_hash(rows[0]["hash"], password):
             return render_template("login.html", error="Wrong username or password")
 
-        # Store the user's ID in the session to keep them logged in
         session["user_id"] = rows[0]["id"]
-        # Redirect to the homepage upon successful login
         return redirect("/")
-
     else:
-        # Handle GET request by rendering the login form
         return render_template("login.html")
 
 @app.route("/logout")
 def logout():
     """Log the user out and redirect to the homepage"""
-    # Clear all session data to end the user's session
     session.clear()
-    # Redirect to the homepage (which will prompt login again)
     return redirect("/")
 
 @app.route("/delete", methods=["GET", "POST"])
@@ -135,15 +112,10 @@ def logout():
 def delete():
     """Handle deletion of list items"""
     if request.method == "POST":
-        # Handle form submission to delete a specific item
-        item = request.form.get("item")  # Get the item to delete from the form
-        # Delete the item from the database where it matches the user's ID and item text
-        db.execute("DELETE FROM list WHERE id = :id AND item = :item", 
-                   id=session["user_id"], item=item)
-        # Redirect to the list page to show the updated list
+        item = request.form.get("item")
+        db.execute("DELETE FROM list WHERE id = :id AND item = :item", id=session["user_id"], item=item)
         return redirect("/list")
     else:
-        # Handle GET request by showing the user's list items for deletion selection
         items = db.execute("SELECT * FROM list WHERE id = :id", id=session["user_id"])
         return render_template("/delete.html", items=items)
 
@@ -152,16 +124,12 @@ def delete():
 def editlist():
     """Handle editing of existing list items"""
     if request.method == "POST":
-        # Handle form submission to update a list item
-        new_item = request.form.get("new")  # New value for the item
-        old_item = request.form.get("item")  # Original item to identify what to update
-        # Update the item in the database
+        new_item = request.form.get("new")
+        old_item = request.form.get("item")
         db.execute("UPDATE list SET item = :new WHERE id = :id AND item = :item", 
                    new=new_item, id=session["user_id"], item=old_item)
-        # Redirect to the list page to reflect changes
         return redirect("/list")
     else:
-        # Handle GET request by showing the user's list items for editing
         items = db.execute("SELECT * FROM list WHERE id = :id", id=session["user_id"])
         return render_template("/editlist.html", items=items)
 
@@ -169,55 +137,49 @@ def editlist():
 def register():
     """Handle new user registration"""
     if request.method == "POST":
-        # Handle form submission for registering a new user
         username = request.form.get("username")
         password = request.form.get("password")
         confirmation = request.form.get("confirmation")
 
-        # Validate username presence
         if not username:
             return render_template("/register.html", error="You haven't entered a username")
-
-        # Validate password presence
         if not password:
             return render_template("/register.html", error="You haven't entered a password")
-
-        # Ensure password matches confirmation
         if password != confirmation:
             return render_template("/register.html", error="The passwords aren't the same")
 
-        # Determine the next available user ID
-        # Note: This method is prone to race conditions in concurrent environments
+        # Check if username already exists
+        if db.execute("SELECT * FROM users WHERE username = :username", username=username):
+            return render_template("/register.html", error="Username already exists")
+
+        # Get the next available ID (though SQLite can auto-increment this if set up properly)
         test = db.execute("SELECT * FROM users")
         if not test:
-            new_id = 1  # First user if no users exist
+            new_id = 1
         else:
             new_id = db.execute("SELECT id FROM users ORDER BY id DESC LIMIT 1")[0]['id'] + 1
 
+        # Hash the password for secure storage
+        hashed_password = generate_password_hash(password)
+
         # Insert the new user into the database
-        # Note: Password should be hashed in a secure implementation
         result = db.execute(
             "INSERT INTO users (id, username, hash, email, name, pic) VALUES(:id, :username, :hash, :email, :name, :pic)",
             id=new_id, 
             username=username, 
-            hash=password,  # Storing plain text password (insecure)
+            hash=hashed_password,
             email=request.form.get("email"), 
             name=request.form.get("name"), 
-            pic='http://dragene.no/wp-content/uploads/2016/06/default1.jpg'  # Default profile picture
+            pic='http://dragene.no/wp-content/uploads/2016/06/default1.jpg'
         )
-        
+
         if not result:
             return render_template("/register.html", error="Error 403. Please report this to the owner of this website immediately!")
         
-        # Initialize a 'new' entry for this user (possibly for notifications), set to 0
         db.execute("INSERT INTO new (id, new) VALUES(:id, :new)", id=new_id, new=0)
-        # Log the new user in by setting their session ID
         session["user_id"] = new_id
-        # Redirect to the homepage
         return redirect("/")
-
     else:
-        # Handle GET request by rendering the registration form
         return render_template("register.html")
 
 @app.route("/settings", methods=["GET"])
@@ -228,9 +190,6 @@ def settings():
     # Retrieve user details from the database
     user_data = db.execute("SELECT * FROM users WHERE id = :id", id=user_id)[0]
     name = user_data['username']
-    word = user_data['hash']  # Password (called 'word' here)
-    # 'title' seems redundant as it's also set to the password hash
-    title = user_data['hash']
     pic = user_data['pic']
     # Render settings page with user information
     return render_template("settings.html", name=name, word=word, pic=pic)
@@ -249,14 +208,32 @@ def name():
 @app.route("/password", methods=["POST"])
 @login_required
 def password():
-    """Update the user's password"""
-    # Note: This lacks verification of the old password, which is a security risk
-    old = request.form.get("old")  # Currently unused
-    new = request.form.get("new")
-    # Update the password in the database without hashing (insecure)
-    db.execute("UPDATE users SET hash = :new WHERE id = :id", 
-               new=new, id=session["user_id"])
-    # Redirect back to settings
+    """Update the user's password after verifying the old password"""
+    # Get the old and new passwords from the form
+    old_password = request.form.get("old")
+    new_password = request.form.get("new")
+
+    # Ensure both old and new passwords are provided
+    if not old_password:
+        return render_template("settings.html", error="Please enter your current password")
+    if not new_password:
+        return render_template("settings.html", error="Please enter a new password")
+
+    # Retrieve the current user's hashed password from the database
+    user_id = session["user_id"]
+    current_hash = db.execute("SELECT hash FROM users WHERE id = :id", id=user_id)[0]["hash"]
+
+    # Verify the old password matches the stored hash
+    if not check_password_hash(current_hash, old_password):
+        return render_template("settings.html", error="Current password is incorrect")
+
+    # Hash the new password for secure storage
+    new_hash = generate_password_hash(new_password)
+
+    # Update the password in the database with the new hash
+    db.execute("UPDATE users SET hash = :new WHERE id = :id", new=new_hash, id=user_id)
+
+    # Redirect back to settings with a success message (optional)
     return redirect("/settings")
 
 @app.route("/delacc", methods=["POST"])
@@ -416,7 +393,7 @@ def pfp():
     else:
         # Revert to the default profile picture
         db.execute("UPDATE users SET pic = :new WHERE id = :id", 
-                   new='http://dragene.no/wp-content/uploads/2016/06/default1.jpg', id=session["user_id"])
+                   new='static/default.jpg', id=session["user_id"])
     # Redirect back to settings
     return redirect("/settings")
 
