@@ -4,22 +4,58 @@
 .red {
   color: red;
   text-align: center;
-
 }
 .body {
   text-align: center;
-
 }
+
+/* Styles for the search form */
+.search-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.search-input {
+  width: 300px;
+  padding: 10px;
+  border: 2px solid #007BFF;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.search-button {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background-color: #0056b3;
+}
+
+h2 {
+  font-family: 'Arial', sans-serif;
+  font-size: 36px;
+  color: #333;
+  font-weight: bold;
+}
+
 {% endblock %}
 
 {% block main %}
 <br><br><br><br><br><br>
+<div class="search-container">
+  <h2 class="black">SYNERSEARCH</h2>
   <form action="https://www.bing.com/search">
-    <h2 class="blue">𝓢𝔂𝓷𝓮𝓻𝓢𝓮𝓪𝓻𝓬𝓱</h2>
-    <div class="input-icons">
-
-             <input class="form-control" placeholder="Search Synersearch" name="q" type="text" class="form-group"/> <button class="btn btn-default" type="submit"><i class="fa fa-search icon"></i></button>
-
-    </div>
+    <input class="search-input" placeholder="Search Synersearch" name="q" type="text" />
+    <button class="search-button" type="submit"><i class="fa fa-search icon"></i> Search</button>
   </form>
+</div>
 {% endblock %}
